@@ -5,6 +5,7 @@ import { Dashboard } from './components/dashboard/Dashboard'
 import { ConnectionManager } from './components/api/ConnectionManager'
 import { usePMSData } from './hooks/usePMSData'
 import { Loader2 } from 'lucide-react'
+import { Toaster } from 'react-hot-toast'
 
 function App() {
   const [user, setUser] = useState(null)
@@ -124,6 +125,7 @@ function App() {
           {renderContent()}
         </div>
       </main>
+      <Toaster position="top-right" />
     </div>
   )
 }

@@ -12,6 +12,8 @@ import { Switch } from '../ui/switch'
 import { Textarea } from '../ui/textarea'
 import { PMSConnection } from '../../types/pms'
 import { usePMSData } from '../../hooks/usePMSData'
+import { CredentialsSetup } from './CredentialsSetup'
+import { IntegrationGuide } from './IntegrationGuide'
 import {
   Plus,
   Trash2,
@@ -23,7 +25,8 @@ import {
   Settings,
   Database,
   Wifi,
-  AlertTriangle
+  AlertTriangle,
+  Key
 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 
@@ -105,6 +108,11 @@ export function ConnectionManager() {
     } catch (error) {
       toast.error('Failed to remove connection')
     }
+  }
+
+  const handleCredentialsSet = (connectionId: string) => {
+    toast.success('Credentials saved securely')
+    // Optionally trigger a connection test here
   }
 
   const getStatusIcon = (status: PMSConnection['status']) => {
@@ -317,19 +325,7 @@ export function ConnectionManager() {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Connected Systems</h3>
         {connections.length === 0 ? (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <Database className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No PMS Connections</h3>
-              <p className="text-gray-600 mb-4">
-                Connect your Property Management System to start syncing data automatically
-              </p>
-              <Button onClick={() => setShowAddDialog(true)} className="gap-2">
-                <Plus className="h-4 w-4" />
-                Add Your First Connection
-              </Button>
-            </CardContent>
-          </Card>
+          <IntegrationGuide />
         ) : (
           <div className="grid gap-4">
             {connections.map((connection) => (
@@ -350,6 +346,10 @@ export function ConnectionManager() {
                       <Badge variant={getStatusColor(connection.status)}>
                         {connection.status}
                       </Badge>
+                      <CredentialsSetup 
+                        connection={connection}
+                        onCredentialsSet={handleCredentialsSet}
+                      />
                       <Button
                         variant="outline"
                         size="sm"
